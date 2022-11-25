@@ -1,0 +1,50 @@
+package com.epam.esm.entity;
+
+import java.util.UUID;
+
+/**
+ * @author Hasanboy Makhmudov
+ * @project Rest api basics
+ * Base Entity
+ */
+
+public abstract class BaseEntity {
+    private UUID id;
+    private String name;
+
+    public BaseEntity(String name) {
+        this.name = name;
+    }
+
+    public BaseEntity(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public BaseEntity() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}

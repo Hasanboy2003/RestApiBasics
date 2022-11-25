@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.DAO.tag.TagDAOImplTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2022-11-25T09:32:45" hostname="WIN-M8EMV3DUNBU" time="0.343">
+  <properties/>
+  <testcase name="findAll()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.042"/>
+  <testcase name="getById()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.038"/>
+  <testcase name="save()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.036"/>
+  <testcase name="existsById()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.051"/>
+  <testcase name="getByGiftCertificateId()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.048"/>
+  <testcase name="getByName()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.033"/>
+  <testcase name="existByName()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.045"/>
+  <testcase name="deleteById()" classname="com.epam.esm.DAO.tag.TagDAOImplTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 25, 2022 2:32:45 PM org.springframework.test.context.support.AbstractTestContextBootstrapper getDefaultTestExecutionListenerClassNames
+INFO: Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+Nov 25, 2022 2:32:45 PM org.springframework.test.context.support.AbstractTestContextBootstrapper getTestExecutionListeners
+INFO: Using TestExecutionListeners: [org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@41758fc9, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@15a54f36, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@1e2b7fa5, org.springframework.test.context.support.DirtiesContextTestExecutionListener@5747a07c, org.springframework.test.context.transaction.TransactionalTestExecutionListener@3aa1669a, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@5c25207, org.springframework.test.context.event.EventPublishingTestExecutionListener@40d1d34d]
+]]></system-err>
+</testsuite>

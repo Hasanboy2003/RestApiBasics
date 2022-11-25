@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2022-11-25T09:32:47" hostname="WIN-M8EMV3DUNBU" time="0.471">
+  <properties/>
+  <testcase name="createSecondTest()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.442"/>
+  <testcase name="create()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.006"/>
+  <testcase name="delete()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="updateSecondTest()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="update()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.003"/>
+  <testcase name="deleteSecond()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.001"/>
+  <testcase name="getFilterResult()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="getById()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="get()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="updateThirdTest()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.002"/>
+  <testcase name="getByIdSecond()" classname="com.epam.esm.service.giftCertificate.GiftCertificateServiceImplTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
