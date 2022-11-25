@@ -40,6 +40,7 @@ public interface TagController {
     @GetMapping("/{id}")
     ResponseEntity<ApiResponse> getById(@PathVariable UUID id);
 
+
     /**
      * Delete tag
      * @param id - UUID
