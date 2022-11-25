@@ -18,57 +18,62 @@ import java.util.UUID;
 public interface GiftCertificateController {
 
 
+    /**
+     * Create gift certificate
+     *
+     * @param dto -> Gift Certificate DTO
+     * @return ApiResponse
+     */
+    @PostMapping
+    ResponseEntity<?> create(@RequestBody GiftCertificateDTO dto);
 
-   /**
-    * Create gift certificate
-    * @param dto -> Gift Certificate DTO
-    * @return ApiResponse
-    */
-   @PostMapping
-   ResponseEntity<?> create(@RequestBody GiftCertificateDTO dto);
+    /**
+     * Update gift certificate
+     *
+     * @param dto -> Gift Certificate DTO
+     * @return ApiResponse
+     */
+    @PutMapping
+    ResponseEntity<?> update(@RequestBody GiftCertificateDTO dto);
 
-   /**
-    * Update gift certificate
-    * @param dto -> Gift Certificate DTO
-    * @return ApiResponse
-    */
-   @PutMapping
-   ResponseEntity<?> update(@RequestBody GiftCertificateDTO dto);
+    /**
+     * Delete gift certificate
+     *
+     * @param id - UUID
+     * @return ApiResponse
+     */
 
-   /**
-    * Delete gift certificate
-    * @param id - UUID
-    * @return ApiResponse
-    */
+    @DeleteMapping("/{id}")
+    ResponseEntity<ApiResponse> delete(@PathVariable UUID id);
 
-   @DeleteMapping("/{id}")
-   ResponseEntity<?> delete(@PathVariable UUID id);
+    /**
+     * Get all gift certificate
+     *
+     * @return ApiResponse
+     */
+    @GetMapping
+    ResponseEntity<ApiResponse> get();
 
-   /**
-    * Get all gift certificate
-    * @return ApiResponse
-    */
-   @GetMapping
-   ResponseEntity<ApiResponse> get();
+    /**
+     * Get Gift Certificate
+     *
+     * @param id - UUID
+     * @return ApiResponse
+     */
+    @GetMapping("/{id}")
+    ResponseEntity<ApiResponse> getById(@PathVariable UUID id);
 
-   /**
-    * Get Gift Certificate
-    * @param id - UUID
-    * @return ApiResponse
-    */
-   @GetMapping("/{id}")
-   ResponseEntity<?> getById(@PathVariable UUID id);
-
-   /**
-    * Filter Gift certificate
-    * @param name - name
-    * @param description - description
-    * @param tag - tag
-    * @param sortParameters - sortParameters
-    * @return ApiResponse
-    */
-   @GetMapping("/filter")
-   ResponseEntity<?> certificateFilter(@RequestParam(required = false) String name,@RequestParam(required = false) String description,
-                                                 @RequestParam(required = false) String tag,@RequestParam(required = false) String sortParameters);
+    /**
+     * Filter Gift certificate
+     *
+     * @param name           - name
+     * @param description    - description
+     * @param tag            - tag
+     * @param sortParameters - sortParameters
+     * @return ApiResponse
+     */
+    @GetMapping("/filter")
+    ResponseEntity<ApiResponse> certificateFilter(@RequestParam(required = false) String name, @RequestParam(required = false) String description,
+                                                  @RequestParam(required = false) String tag, @RequestParam(required = false) String sortParameters);
 
 }

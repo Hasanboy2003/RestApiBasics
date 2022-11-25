@@ -1,6 +1,7 @@
 package com.epam.esm.controller.tag;
 
 import com.epam.esm.DTO.TagDTO;
+import com.epam.esm.DTO.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +23,14 @@ public interface TagController {
      * @return ApiResponse
      */
     @PostMapping
-    ResponseEntity<?> create(@RequestBody TagDTO dto);
+    ResponseEntity<ApiResponse> create(@RequestBody TagDTO dto);
 
     /**
      * Get All Taf
      * @return ApiResponse
      */
     @GetMapping
-    ResponseEntity<?> get();
+    ResponseEntity<ApiResponse> get();
 
     /**
      * Get Tag
@@ -37,7 +38,7 @@ public interface TagController {
      * @return ApiResponse
      */
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable UUID id);
+    ResponseEntity<ApiResponse> getById(@PathVariable UUID id);
 
     /**
      * Delete tag
@@ -45,7 +46,7 @@ public interface TagController {
      * @return ApiResponse
      */
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable UUID id);
+    ResponseEntity<ApiResponse> delete(@PathVariable UUID id);
 
 
 }

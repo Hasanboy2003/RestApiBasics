@@ -32,7 +32,6 @@ public class GlobalExceptionHandler {
         errorDTO.setErrorCode(ErrorCodeStatus.CONFLICT.code);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDTO);
     }
-    
 
     @ExceptionHandler(NotValidException.class)
     public ResponseEntity<ErrorDTO> handleNotValidException(NotValidException e) {
