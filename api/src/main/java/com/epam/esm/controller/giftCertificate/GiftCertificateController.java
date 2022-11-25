@@ -25,7 +25,7 @@ public interface GiftCertificateController {
      * @return ApiResponse
      */
     @PostMapping
-    ResponseEntity<?> create(@RequestBody GiftCertificateDTO dto);
+    ResponseEntity<ApiResponse> create(@RequestBody GiftCertificateDTO dto);
 
     /**
      * Update gift certificate
@@ -34,7 +34,7 @@ public interface GiftCertificateController {
      * @return ApiResponse
      */
     @PutMapping
-    ResponseEntity<?> update(@RequestBody GiftCertificateDTO dto);
+    ResponseEntity<ApiResponse> update(@RequestBody GiftCertificateDTO dto);
 
     /**
      * Delete gift certificate
