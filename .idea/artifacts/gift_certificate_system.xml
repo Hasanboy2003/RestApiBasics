@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="unnamed">
-    <output-path>$PROJECT_DIR$/out/artifacts/unnamed</output-path>
+  <artifact type="exploded-war" name="gift-certificate-system">
+    <output-path>$PROJECT_DIR$/out/artifacts/gift_certificate_system</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -15,7 +15,6 @@
           <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.14.0" />
           <element id="library" level="project" name="Gradle: com.h2database:h2:2.1.214" />
           <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
-          <element id="library" level="project" name="Gradle: javax.validation:validation-api:2.0.1.Final" />
           <element id="library" level="project" name="Gradle: org.apache.commons:commons-dbcp2:2.9.0" />
           <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.10.0" />
           <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:3.5.0" />
