@@ -24,14 +24,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     private final GiftCertificateRowMapper giftCertificateRowMapper;
 
-    public GiftCertificateDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, MapSqlParameterSource parameterSource, GiftCertificateRowMapper giftCertificateRowMapper) {
-
-        this.jdbcTemplate = jdbcTemplate;
-        this.parameterSource = parameterSource;
-        this.giftCertificateRowMapper = giftCertificateRowMapper;
-
-    }
-
 
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id=:id";
     private static final String SELECT_GIFT_CERTIFICATE = "SELECT * FROM gift_certificate";
@@ -48,6 +40,13 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private static final String SELECT_GIFT_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name=:name";
     private static final String INSERT_GIT_CERTIFICATE_TAG = "INSERT INTO gift_certificate_tag(gift_certificate_id,tag_id) VALUES(:giftCertificateId,:tagId)";
 
+    public GiftCertificateDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, MapSqlParameterSource parameterSource, GiftCertificateRowMapper giftCertificateRowMapper) {
+
+        this.jdbcTemplate = jdbcTemplate;
+        this.parameterSource = parameterSource;
+        this.giftCertificateRowMapper = giftCertificateRowMapper;
+
+    }
 
     @Override
     public GiftCertificate getById(UUID id) {

@@ -23,11 +23,7 @@ public class TagDAOImpl implements TagDAO {
     private final TagRowMapper tagRowMapper;
     private final MapSqlParameterSource parameterSource;
 
-    public TagDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, TagRowMapper tagRowMapper, MapSqlParameterSource parameterSource) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.tagRowMapper = tagRowMapper;
-        this.parameterSource = parameterSource;
-    }
+
 
     private static final String SELECT_TAG_BY_ID = "SELECT * FROM tag WHERE id=:id";
     private static final String SELECT_TAG = "SELECT * FROM tag";
@@ -44,6 +40,12 @@ public class TagDAOImpl implements TagDAO {
                     "         JOIN gift_certificate_tag gct ON t.id = gct.tag_id\n" +
                     "         JOIN gift_certificate gc ON gc.id = gct.gift_certificate_id\n" +
                     "WHERE gc.id =:id";
+
+    public TagDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, TagRowMapper tagRowMapper, MapSqlParameterSource parameterSource) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.tagRowMapper = tagRowMapper;
+        this.parameterSource = parameterSource;
+    }
 
     @Override
     public Tag getById(UUID id) {
