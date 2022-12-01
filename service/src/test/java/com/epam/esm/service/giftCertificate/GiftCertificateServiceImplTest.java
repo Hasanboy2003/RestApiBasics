@@ -1,11 +1,11 @@
 package com.epam.esm.service.giftCertificate;
 
-import com.epam.esm.DAO.giftCertificate.GiftCertificateDAO;
-import com.epam.esm.DAO.tag.TagDAO;
-import com.epam.esm.DTO.GiftCertificateDTO;
-import com.epam.esm.DTO.TagDTO;
-import com.epam.esm.DTO.response.ApiResponse;
-import com.epam.esm.DTO.response.ResponseMessage;
+import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
+import com.epam.esm.dao.tag.TagDAO;
+import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.dto.TagDTO;
+import com.epam.esm.dto.response.ApiResponse;
+import com.epam.esm.dto.response.ResponseMessage;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.AlreadyExistsException;

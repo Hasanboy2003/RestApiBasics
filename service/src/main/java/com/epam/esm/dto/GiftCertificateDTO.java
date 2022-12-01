@@ -1,6 +1,5 @@
-package com.epam.esm.DTO;
+package com.epam.esm.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;

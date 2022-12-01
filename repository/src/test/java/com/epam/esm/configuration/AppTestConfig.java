@@ -1,11 +1,11 @@
 package com.epam.esm.configuration;
 
-import com.epam.esm.DAO.giftCertificate.GiftCertificateDAO;
-import com.epam.esm.DAO.giftCertificate.GiftCertificateDAOImpl;
-import com.epam.esm.DAO.tag.TagDAO;
-import com.epam.esm.DAO.tag.TagDAOImpl;
-import com.epam.esm.rowMapper.GiftCertificateRowMapper;
-import com.epam.esm.rowMapper.TagRowMapper;
+import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
+import com.epam.esm.dao.gift_certificate.GiftCertificateDAOImpl;
+import com.epam.esm.dao.tag.TagDAO;
+import com.epam.esm.dao.tag.TagDAOImpl;
+import com.epam.esm.row_mapper.GiftCertificateRowMapper;
+import com.epam.esm.row_mapper.TagRowMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

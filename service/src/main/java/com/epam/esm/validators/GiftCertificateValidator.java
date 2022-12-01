@@ -1,6 +1,6 @@
 package com.epam.esm.validators;
 
-import com.epam.esm.DTO.GiftCertificateDTO;
+import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.exceptions.NotValidException;
 import org.springframework.stereotype.Component;
 

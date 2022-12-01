@@ -1,7 +1,7 @@
 package com.epam.esm.controller.tag;
 
-import com.epam.esm.DTO.TagDTO;
-import com.epam.esm.DTO.response.ApiResponse;
+import com.epam.esm.dto.TagDTO;
+import com.epam.esm.dto.response.ApiResponse;
 import com.epam.esm.service.tag.TagService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.epam.esm.DAO.giftCertificate;
+package com.epam.esm.dao.gift_certificate;
 
-import com.epam.esm.DAO.BaseDAO;
+import com.epam.esm.dao.BaseDAO;
 import com.epam.esm.entity.GiftCertificate;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.DTO.response.ApiResponse;
+import com.epam.esm.dto.response.ApiResponse;
 
 import java.util.UUID;
 

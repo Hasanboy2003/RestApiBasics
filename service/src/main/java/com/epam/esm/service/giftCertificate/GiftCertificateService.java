@@ -1,10 +1,8 @@
 package com.epam.esm.service.giftCertificate;
 
-import com.epam.esm.DTO.GiftCertificateDTO;
-import com.epam.esm.DTO.response.ApiResponse;
+import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.dto.response.ApiResponse;
 import com.epam.esm.service.BaseService;
-
-import java.util.UUID;
 
 /**
  * @author Hasanboy Makhmudov

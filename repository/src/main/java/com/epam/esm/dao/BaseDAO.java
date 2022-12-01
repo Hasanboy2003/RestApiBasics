@@ -1,6 +1,4 @@
-package com.epam.esm.DAO;
-
-import com.epam.esm.entity.Tag;
+package com.epam.esm.dao;
 
 import java.util.List;
 

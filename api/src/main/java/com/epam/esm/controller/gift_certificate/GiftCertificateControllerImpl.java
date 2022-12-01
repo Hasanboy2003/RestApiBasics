@@ -1,7 +1,7 @@
-package com.epam.esm.controller.giftCertificate;
+package com.epam.esm.controller.gift_certificate;
 
-import com.epam.esm.DTO.GiftCertificateDTO;
-import com.epam.esm.DTO.response.ApiResponse;
+import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.dto.response.ApiResponse;
 import com.epam.esm.service.giftCertificate.GiftCertificateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

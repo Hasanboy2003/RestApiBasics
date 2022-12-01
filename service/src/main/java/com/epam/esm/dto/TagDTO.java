@@ -1,4 +1,4 @@
-package com.epam.esm.DTO;
+package com.epam.esm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

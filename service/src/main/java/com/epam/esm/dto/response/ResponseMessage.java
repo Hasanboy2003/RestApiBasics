@@ -1,4 +1,4 @@
-package com.epam.esm.DTO.response;
+package com.epam.esm.dto.response;
 
 
 /**

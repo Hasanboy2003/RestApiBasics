@@ -1,4 +1,4 @@
-package com.epam.esm.rowMapper;
+package com.epam.esm.row_mapper;
 
 import com.epam.esm.entity.Tag;
 import org.springframework.jdbc.core.RowMapper;

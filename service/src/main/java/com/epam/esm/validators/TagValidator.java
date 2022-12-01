@@ -1,7 +1,7 @@
 package com.epam.esm.validators;
 
-import com.epam.esm.DAO.tag.TagDAO;
-import com.epam.esm.DTO.TagDTO;
+import com.epam.esm.dao.tag.TagDAO;
+import com.epam.esm.dto.TagDTO;
 import com.epam.esm.exceptions.AlreadyExistsException;
 import com.epam.esm.exceptions.NotValidException;
 import org.springframework.stereotype.Component;

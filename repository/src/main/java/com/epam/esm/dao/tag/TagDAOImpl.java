@@ -1,7 +1,7 @@
-package com.epam.esm.DAO.tag;
+package com.epam.esm.dao.tag;
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.rowMapper.TagRowMapper;
+import com.epam.esm.row_mapper.TagRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,6 +30,20 @@ public class TagDAOImpl implements TagDAO {
     }
 
     private static final String SELECT_TAG_BY_ID = "SELECT * FROM tag WHERE id=:id";
+    private static final String SELECT_TAG = "SELECT * FROM tag";
+    private static final String DELETE_TAG = "DELETE FROM tag WHERE id=:id";
+    private static final String INSERT_TAG = "INSERT INTO tag(id,name) VALUES(:id,:name)";
+    private static final String DELETE_GIFT_CERTIFICATE_TAG = "DELETE FROM gift_certificate_tag WHERE tag_id=:tagId";
+    private static final String EXIST_TAG_BY_ID = "select case when exists(select * from tag t where t.id =:id ) then true else false end ";
+    private static final String EXIST_TAG_BY_NAME = "select case when exists(select * from tag t where t.name =:name ) then true else false end ";
+    private static final String SELECT_TAG_BY_NAME = "SELECT * FROM tag t WHERE t.name=:name";
+
+    private static final String SELECT_TAG_BY_GIFT_CERTIFICATE_ID =
+            "SELECT t.*\n" +
+                    "FROM tag t\n" +
+                    "         JOIN gift_certificate_tag gct ON t.id = gct.tag_id\n" +
+                    "         JOIN gift_certificate gc ON gc.id = gct.gift_certificate_id\n" +
+                    "WHERE gc.id =:id";
 
     @Override
     public Tag getById(UUID id) {
@@ -37,7 +51,6 @@ public class TagDAOImpl implements TagDAO {
         return  jdbcTemplate.query(SELECT_TAG_BY_ID, parameterSource, tagRowMapper).get(0);
     }
 
-    private static final String SELECT_TAG = "SELECT * FROM tag";
 
     @Override
     public List<Tag> findAll() {
@@ -46,7 +59,6 @@ public class TagDAOImpl implements TagDAO {
 
     }
 
-    private static final String DELETE_TAG = "DELETE FROM tag WHERE id=:id";
 
     @Override
     public boolean deleteById(UUID id) {
@@ -55,7 +67,6 @@ public class TagDAOImpl implements TagDAO {
         return delete==1;
     }
 
-    private static final String INSERT_TAG = "INSERT INTO tag(id,name) VALUES(:id,:name)";
 
 
 
@@ -66,7 +77,6 @@ public class TagDAOImpl implements TagDAO {
         return save==1;
     }
 
-    private static final String DELETE_GIFT_CERTIFICATE_TAG = "DELETE FROM gift_certificate_tag WHERE tag_id=:tagId";
 
     @Override
     public void deleteConnection(UUID tagId) {
@@ -74,7 +84,6 @@ public class TagDAOImpl implements TagDAO {
         jdbcTemplate.update(DELETE_GIFT_CERTIFICATE_TAG, parameterSource);
     }
 
-    private static final String EXIST_TAG_BY_ID = "select case when exists(select * from tag t where t.id =:id ) then true else false end ";
 
     @Override
     public boolean existsById(UUID id) {
@@ -88,7 +97,6 @@ public class TagDAOImpl implements TagDAO {
         ));
     }
 
-    private static final String EXIST_TAG_BY_NAME = "select case when exists(select * from tag t where t.name =:name ) then true else false end ";
 
 
     @Override
@@ -105,7 +113,6 @@ public class TagDAOImpl implements TagDAO {
 
     }
 
-    private static final String SELECT_TAG_BY_NAME = "SELECT * FROM tag t WHERE t.name=:name";
 
     @Override
     public Tag getByName(String name) {
@@ -113,12 +120,7 @@ public class TagDAOImpl implements TagDAO {
         return  jdbcTemplate.query(SELECT_TAG_BY_NAME, parameterSource, tagRowMapper).get(0);
     }
 
-    private static final String SELECT_TAG_BY_GIFT_CERTIFICATE_ID =
-            "SELECT t.*\n" +
-            "FROM tag t\n" +
-            "         JOIN gift_certificate_tag gct ON t.id = gct.tag_id\n" +
-            "         JOIN gift_certificate gc ON gc.id = gct.gift_certificate_id\n" +
-            "WHERE gc.id =:id";
+
 
     @Override
     public List<Tag> getByGiftCertificateId(UUID giftCertificateId) {

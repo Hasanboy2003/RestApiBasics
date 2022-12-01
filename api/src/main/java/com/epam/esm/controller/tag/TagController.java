@@ -1,7 +1,7 @@
 package com.epam.esm.controller.tag;
 
-import com.epam.esm.DTO.TagDTO;
-import com.epam.esm.DTO.response.ApiResponse;
+import com.epam.esm.dto.TagDTO;
+import com.epam.esm.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

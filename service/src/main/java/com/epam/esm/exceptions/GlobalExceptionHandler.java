@@ -1,6 +1,6 @@
 package com.epam.esm.exceptions;
 
-import com.epam.esm.DTO.response.ErrorDTO;
+import com.epam.esm.dto.response.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

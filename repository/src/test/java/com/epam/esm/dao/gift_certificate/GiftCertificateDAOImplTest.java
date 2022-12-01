@@ -1,6 +1,6 @@
-package com.epam.esm.DAO.giftCertificate;
+package com.epam.esm.dao.gift_certificate;
 
-import com.epam.esm.DAO.tag.TagDAO;
+import com.epam.esm.dao.tag.TagDAO;
 import com.epam.esm.configuration.AppTestConfig;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;

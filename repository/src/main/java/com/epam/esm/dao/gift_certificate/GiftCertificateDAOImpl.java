@@ -1,7 +1,7 @@
-package com.epam.esm.DAO.giftCertificate;
+package com.epam.esm.dao.gift_certificate;
 
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.rowMapper.GiftCertificateRowMapper;
+import com.epam.esm.row_mapper.GiftCertificateRowMapper;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -34,6 +34,20 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
 
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id=:id";
+    private static final String SELECT_GIFT_CERTIFICATE = "SELECT * FROM gift_certificate";
+    private static final String DELETE_GIFT_CERTIFICATE = "DELETE FROM gift_certificate WHERE id=:id";
+
+    private static final String INSERT_GIFT_CERTIFICATE = "INSERT INTO gift_certificate(id,name,description,price,duration,create_date,last_update_date) " +
+            "VALUES(:id,:name,:description,:price,:duration,:createDate,:lastUpdateDate)";
+
+    private static final String EXIST_GIFT_CERTIFICATE_BY_ID = "select case when exists(select * from gift_certificate gc where gc.id =:id ) then true else false end as exist";
+
+    private static final String UPDATE_GIFT_CERTIFICATE = "UPDATE gift_certificate SET name = :name, description = :description, price = :price, " +
+            "duration = :duration, last_update_date = :last_update_date WHERE id = :id";
+    private static final String EXIST_GIFT_CERTIFICATE_BY_NAME = "select case when exists( select * from gift_certificate gc where gc.name =:name ) then true else false end ";
+    private static final String SELECT_GIFT_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name=:name";
+    private static final String INSERT_GIT_CERTIFICATE_TAG = "INSERT INTO gift_certificate_tag(gift_certificate_id,tag_id) VALUES(:giftCertificateId,:tagId)";
+
 
     @Override
     public GiftCertificate getById(UUID id) {
@@ -43,7 +57,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     }
 
-    private static final String SELECT_GIFT_CERTIFICATE = "SELECT * FROM gift_certificate";
 
     @Override
     public List<GiftCertificate> findAll() {
@@ -52,7 +65,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     }
 
-    private static final String DELETE_GIFT_CERTIFICATE = "DELETE FROM gift_certificate WHERE id=:id";
 
     @Override
     public boolean deleteById(UUID id) {
@@ -64,8 +76,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     }
 
-    private static final String INSERT_GIFT_CERTIFICATE = "INSERT INTO gift_certificate(id,name,description,price,duration,create_date,last_update_date) " +
-            "VALUES(:id,:name,:description,:price,:duration,:createDate,:lastUpdateDate)";
+
 
     @Override
     public boolean save(GiftCertificate entity) {
@@ -80,7 +91,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         return save == 1;
     }
 
-    private static final String EXIST_GIFT_CERTIFICATE_BY_ID = "select case when exists(select * from gift_certificate gc where gc.id =:id ) then true else false end as exist";
 
     @Override
     public boolean existsById(UUID id) {
@@ -94,8 +104,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         });
     }
 
-    private static final String UPDATE_GIFT_CERTIFICATE = "UPDATE gift_certificate SET name = :name, description = :description, price = :price, " +
-            "duration = :duration, last_update_date = :last_update_date WHERE id = :id";
+
 
 
     @Override
@@ -111,7 +120,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         return update == 1;
     }
 
-    private static final String EXIST_GIFT_CERTIFICATE_BY_NAME = "select case when exists( select * from gift_certificate gc where gc.name =:name ) then true else false end ";
 
 
     @Override
@@ -126,7 +134,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         });
     }
 
-    private static final String SELECT_GIFT_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE name=:name";
 
 
     @Override
@@ -137,7 +144,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     }
 
-    private static final String INSERT_GIT_CERTIFICATE_TAG = "INSERT INTO gift_certificate_tag(gift_certificate_id,tag_id) VALUES(:giftCertificateId,:tagId)";
 
     @Override
     public boolean connectWithTag(UUID giftCertificateId, UUID tagId) {
