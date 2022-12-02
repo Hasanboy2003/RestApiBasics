@@ -1,10 +1,10 @@
 package com.epam.esm.validators;
 
-import com.epam.esm.dao.tag.TagDAO;
 import com.epam.esm.dto.TagDTO;
-import com.epam.esm.exceptions.AlreadyExistsException;
 import com.epam.esm.exceptions.NotValidException;
 import org.springframework.stereotype.Component;
+
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 /**
  * @author Hasanboy Makhmudov
@@ -15,18 +15,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class TagValidator implements BaseValidator<TagDTO>{
 
-    private final TagDAO tagDAO;
 
-    public TagValidator(TagDAO tagDAO) {
-        this.tagDAO = tagDAO;
-    }
+
 
     @Override
     public void validate(TagDTO tagDTO) {
         if(tagDTO.getName()==null)
-           throw  new NotValidException("Name must not be null");
-        if(tagDAO.existByName(tagDTO.getName()))
-            throw new AlreadyExistsException("Name already exists");
+           throw  new NotValidException("Tag name must not be null");
+
+        if(tagDTO.getName().isEmpty())
+            throw new NotValidException("Tag name must not be empty");
+
+        if(isNumeric(tagDTO.getName()))
+            throw new NotValidException("Tag name must not be digit");
     }
 
 }

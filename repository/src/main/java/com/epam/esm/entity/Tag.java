@@ -14,7 +14,6 @@ public class Tag extends BaseEntity{
         super(id, name);
     }
 
-
     public Tag() {
     }
 

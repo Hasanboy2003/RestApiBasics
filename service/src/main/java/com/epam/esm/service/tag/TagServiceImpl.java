@@ -1,6 +1,5 @@
 package com.epam.esm.service.tag;
 
-import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
 import com.epam.esm.dao.tag.TagDAO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.response.ApiResponse;
@@ -25,14 +24,13 @@ import java.util.stream.Collectors;
 @Service
 public class TagServiceImpl implements TagService {
     private final TagDAO tagDAO;
-    private final GiftCertificateDAO giftCertificateDAO;
     private final TagMapper tagMapper;
 
     private final TagValidator tagValidator;
+    private static final String NOT_FOUND_MESSAGE="Requested tag not found (id=";
 
-    public TagServiceImpl(TagDAO tagDAO, GiftCertificateDAO giftCertificateDAO, TagMapper tagMapper, TagValidator tagValidator) {
+    public TagServiceImpl(TagDAO tagDAO, TagMapper tagMapper, TagValidator tagValidator) {
         this.tagDAO = tagDAO;
-        this.giftCertificateDAO = giftCertificateDAO;
         this.tagMapper = tagMapper;
         this.tagValidator = tagValidator;
     }
@@ -59,7 +57,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public ApiResponse getById(UUID id) {
         if (!tagDAO.existsById(id))
-            throw new NotFoundException("Requested tag not found (id=" + id + ")");
+            throw new NotFoundException(NOT_FOUND_MESSAGE + id + ")");
 
         TagDTO tagDTO = tagMapper.fromEntityToDTO(tagDAO.getById(id));
         return new ApiResponse(ResponseMessage.READ.getValue(), tagDTO);
@@ -70,8 +68,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public ApiResponse delete(UUID id) {
         if (!tagDAO.existsById(id))
-            throw new NotFoundException("Requested tag not found (id=" + id + ")");
+            throw new NotFoundException( NOT_FOUND_MESSAGE+ id + ")");
 
+        tagDAO.deleteConnection(id);
         tagDAO.deleteById(id);
         return new ApiResponse(ResponseMessage.DELETED.getValue());
     }

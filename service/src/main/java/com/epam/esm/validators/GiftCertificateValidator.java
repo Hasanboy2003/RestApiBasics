@@ -4,6 +4,8 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.exceptions.NotValidException;
 import org.springframework.stereotype.Component;
 
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+
 /**
  * @author Hasanboy Makhmudov
  * @project Rest api basics
@@ -18,6 +20,12 @@ public class GiftCertificateValidator implements BaseValidator<GiftCertificateDT
         if(dto.getName()==null){
             throw new NotValidException("Gift certificate name must not be null!");
         }
+
+        if(dto.getName().isEmpty())
+            throw  new NotValidException("Gift certificate name mus not be empty!");
+
+        if(isNumeric(dto.getName()))
+            throw new NotValidException("Gift certificate name must not be digit");
 
         if(dto.getPrice()<=0){
             throw new NotValidException("Gift certificate price must be positive!");

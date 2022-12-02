@@ -14,6 +14,8 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TagDTO {
     private UUID id;
+
+
     private String name;
 
     public TagDTO() {
@@ -44,11 +46,4 @@ public class TagDTO {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "TagDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

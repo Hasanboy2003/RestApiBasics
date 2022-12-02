@@ -53,7 +53,7 @@ class GiftCertificateDAOImplTest {
 
 
     @Test
-    void save() {
+    void saveShouldWork() {
         GiftCertificate certificate = new GiftCertificate(UUID.randomUUID(), "GiftCertificate", "Description for GiftCertificate",
                 189.637, 33, LocalDateTime.now(), LocalDateTime.now(), Collections.singletonList(tag));
         assertTrue(giftCertificateDAO.save(certificate));
@@ -61,7 +61,7 @@ class GiftCertificateDAOImplTest {
 
 
     @Test
-    void update() {
+    void updateShouldWork() {
         GiftCertificate newGiftCertificate = new GiftCertificate(giftCertificate.getId(),
                 "NewGiftCertificate", "Description for new gift certificate",
                 392.734, 28, LocalDateTime.now(), LocalDateTime.now(), null);
@@ -70,10 +70,16 @@ class GiftCertificateDAOImplTest {
 
 
     @Test
-    void getById() {
+    void getByIdShouldWork() {
         GiftCertificate getCertificate = giftCertificateDAO.getById(giftCertificate.getId());
         assertNotNull(getCertificate);
         assertEquals(getCertificate.getName(), giftCertificate.getName());
+    }
+
+    @Test
+    void getByIdShouldNotWork() {
+        GiftCertificate getCertificate = giftCertificateDAO.getById(UUID.randomUUID());
+        assertNull(getCertificate);
     }
 
     @Test
@@ -83,56 +89,98 @@ class GiftCertificateDAOImplTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdShouldWork() {
+        assertTrue(giftCertificateDAO.deleteById(giftCertificate.getId()));
+    }
+
+    @Test
+    void deleteByIdShouldNotWork() {
         assertTrue(giftCertificateDAO.deleteById(giftCertificate.getId()));
     }
 
 
+
     @Test
-    void existsById() {
+    void existsByIdShouldWork() {
         assertTrue(giftCertificateDAO.existsById(giftCertificate.getId()));
-        assertFalse(giftCertificateDAO.existsById(UUID.randomUUID()));
     }
 
     @Test
-    void existByName() {
+    void existsByIdShouldNotWork() {
+        assertFalse(giftCertificateDAO.existsById(UUID.randomUUID()));
+    }
+
+
+    @Test
+    void existByNameShouldWork() {
         assertTrue(giftCertificateDAO.existByName(giftCertificate.getName()));
+    }
+
+    @Test
+    void existByNameShouldNotWork() {
         assertFalse(giftCertificateDAO.existByName("testName"));
     }
 
     @Test
-    void getByName() {
+    void getByNameShouldWork() {
         GiftCertificate certificate = giftCertificateDAO.getByName(giftCertificate.getName());
         assertNotNull(certificate);
         assertEquals(certificate.getName(), giftCertificate.getName());
     }
 
     @Test
-    void connectWithTag() {
+    void getByNameShouldWorkNot() {
+        GiftCertificate certificate = giftCertificateDAO.getByName("name");
+        assertNull(certificate);
+    }
+
+    @Test
+    void connectWithTagShouldWork() {
         assertTrue(giftCertificateDAO.connectWithTag(giftCertificate.getId(), tag.getId()));
     }
 
     @Test
-    void existByGiftCertificateIdAndTagId() {
+    void connectWithTagShouldNotWork() {
+        assertFalse(giftCertificateDAO.connectWithTag(UUID.randomUUID(), tag.getId()));
+    }
+
+    @Test
+    void existByGiftCertificateIdAndTagIdShouldWork() {
         giftCertificateDAO.connectWithTag(giftCertificate.getId(), tag.getId());
         assertTrue(giftCertificateDAO.existByGiftCertificateIdAndTagId(giftCertificate.getId(), tag.getId()));
+    }
+    @Test
+    void existByGiftCertificateIdAndTagIdShouldNotWork() {
         assertFalse(giftCertificateDAO.existByGiftCertificateIdAndTagId(UUID.randomUUID(), tag.getId()));
         assertFalse(giftCertificateDAO.existByGiftCertificateIdAndTagId(giftCertificate.getId(), UUID.randomUUID()));
     }
 
     @Test
-    public void deleteConnection() {
+    void deleteConnectionShouldWork() {
+        giftCertificateDAO.connectWithTag(giftCertificate.getId(), tag.getId());
         giftCertificateDAO.deleteConnection(giftCertificate.getId());
         assertTrue(tagDAO.getByGiftCertificateId(giftCertificate.getId()).isEmpty());
     }
 
     @Test
-    void existByNameAndIdNotEquals() {
-        assertTrue(giftCertificateDAO.existByNameAndIdNotEquals(UUID.randomUUID(), giftCertificate.getName()));
+    void deleteConnectionShouldNotWork() {
+        giftCertificateDAO.connectWithTag(giftCertificate.getId(), tag.getId());
+        giftCertificateDAO.deleteConnection(UUID.randomUUID());
+        assertFalse(tagDAO.getByGiftCertificateId(giftCertificate.getId()).isEmpty());
     }
 
     @Test
-    void searchByFilters() {
+    void existByNameAndIdNotEqualsShouldWork() {
+        assertTrue(giftCertificateDAO.existByNameAndIdNotEquals(UUID.randomUUID(), giftCertificate.getName()));
+    }
+    @Test
+    void existByNameAndIdNotEqualsShouldNotWork() {
+        assertFalse(giftCertificateDAO.existByNameAndIdNotEquals(giftCertificate.getId(),"name"));
+    }
+
+
+    @Test
+    void searchByFiltersShouldWork() {
         List<GiftCertificate> certificateList;
         certificateList = giftCertificateDAO.searchByFilters("Certificate", null, null, null);
         assertNotNull(certificateList);
@@ -144,10 +192,10 @@ class GiftCertificateDAOImplTest {
         certificateList = giftCertificateDAO.searchByFilters(null, null, "Test tag", null);
         assertNotNull(certificateList);
 
-        certificateList = giftCertificateDAO.searchByFilters(null, null, null, "name/create_date/des");
+        certificateList = giftCertificateDAO.searchByFilters(null, null, null, "mane");
         assertNotNull(certificateList);
 
-        certificateList = giftCertificateDAO.searchByFilters("Certificate", "for test", "Test tag", "name/create_date/des");
+        certificateList = giftCertificateDAO.searchByFilters("Certificate", "for test", "Test tag", "name/create_date/desc");
         assertNotNull(certificateList);
 
         certificateList = giftCertificateDAO.searchByFilters(null, null, null, null);

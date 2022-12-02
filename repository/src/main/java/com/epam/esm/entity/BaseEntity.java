@@ -12,16 +12,12 @@ public abstract class BaseEntity {
     private UUID id;
     private String name;
 
-    public BaseEntity(String name) {
-        this.name = name;
-    }
-
-    public BaseEntity(UUID id, String name) {
+    protected BaseEntity(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public BaseEntity() {
+    protected BaseEntity() {
     }
 
     public UUID getId() {
@@ -40,11 +36,5 @@ public abstract class BaseEntity {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "BaseEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+
 }

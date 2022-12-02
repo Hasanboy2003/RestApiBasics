@@ -1,4 +1,4 @@
-package com.epam.esm.service.giftCertificate;
+package com.epam.esm.service.gift_certificate;
 
 import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
 import com.epam.esm.dao.tag.TagDAO;
@@ -11,8 +11,8 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.AlreadyExistsException;
 import com.epam.esm.exceptions.NotFoundException;
 import com.epam.esm.mapper.GiftCertificateMapper;
-import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.validators.GiftCertificateValidator;
+import com.epam.esm.validators.TagValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hasanboy Makhmudov
@@ -47,11 +48,12 @@ class GiftCertificateServiceImplTest {
     @Mock
     private GiftCertificateMapper giftCertificateMapper;
 
-    @Mock
-    private TagMapper tagMapper;
 
     @Mock
     private GiftCertificateDAO giftCertificateDAO;
+
+    @Mock
+    private TagValidator tagValidator;
 
     @Mock
     private TagDAO tagDAO;
@@ -64,7 +66,7 @@ class GiftCertificateServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateValidator, giftCertificateDAO, tagDAO, giftCertificateMapper, tagMapper);
+        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateValidator, giftCertificateDAO, tagDAO, tagValidator, giftCertificateMapper);
 
         Tag tag = new Tag(UUID.randomUUID(), "Test tag");
         giftCertificate = new GiftCertificate(UUID.randomUUID(), "TestGiftCertificate", "Description for test",
@@ -78,7 +80,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void create() {
+    void createShouldWork() {
         when(giftCertificateMapper.fromDTOToEntity(giftCertificateDTO)).thenReturn(giftCertificate);
         when(giftCertificateDAO.existByName(giftCertificateDTO.getName())).thenReturn(false);
 
@@ -97,7 +99,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void createSecondTest() {
+    void createShouldNotWork() {
         when(giftCertificateDAO.existByName(giftCertificateDTO.getName())).thenReturn(true);
 
         assertThrows(AlreadyExistsException.class, () -> giftCertificateService.create(giftCertificateDTO));
@@ -106,7 +108,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void update() {
+    void updateShouldWork() {
 
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(true);
         when(giftCertificateDAO.existByNameAndIdNotEquals(giftCertificateDTO.getId(), giftCertificateDTO.getName())).thenReturn(false);
@@ -129,7 +131,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    public void updateSecondTest() {
+    void updateShouldNotWork1() {
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class, () -> giftCertificateService.update(giftCertificateDTO));
@@ -138,7 +140,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    public void updateThirdTest() {
+    void updateShouldNotWork2() {
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(true);
         when(giftCertificateDAO.existByNameAndIdNotEquals(giftCertificateDTO.getId(),
                 giftCertificateDTO.getName())).thenReturn(true);
@@ -151,7 +153,7 @@ class GiftCertificateServiceImplTest {
 
 
     @Test
-    void delete() {
+    void deleteShouldWork() {
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(true);
 
         ApiResponse response = giftCertificateService.delete(giftCertificateDTO.getId());
@@ -170,7 +172,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void deleteSecond(){
+    void deleteShouldNotWork(){
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class, () -> giftCertificateService.delete(giftCertificateDTO.getId()));
@@ -179,19 +181,18 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void get() {
+    void getShouldWork() {
 
         ApiResponse response = giftCertificateService.get();
 
         verify(giftCertificateDAO).findAll();
-
         assertDoesNotThrow(() -> giftCertificateService.get());
         assertEquals(ResponseMessage.READ.getValue(),response.getMessage());
 
     }
 
     @Test
-    void getById() {
+    void getByIdShouldWork() {
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(true);
         when(giftCertificateDAO.getById(giftCertificateDTO.getId())).thenReturn(giftCertificate);
 
@@ -210,7 +211,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void getByIdSecond(){
+    void getByIdShouldNotWork(){
         when(giftCertificateDAO.existsById(giftCertificateDTO.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class,() -> giftCertificateService.getById(giftCertificateDTO.getId()));
@@ -220,7 +221,7 @@ class GiftCertificateServiceImplTest {
 
 
     @Test
-    void getFilterResult() {
+    void getFilterResultShouldWork() {
 
         ApiResponse response = giftCertificateService.getFilterResult(giftCertificate.getName(),null,null,null);
 

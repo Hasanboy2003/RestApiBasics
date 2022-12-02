@@ -2,15 +2,10 @@ package com.epam.esm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * @author Hasanboy Makhmudov
- * @project Rest api basics
- * Gift Certificate DTO
- */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GiftCertificateDTO {
@@ -28,15 +23,6 @@ public class GiftCertificateDTO {
     public GiftCertificateDTO() {
     }
 
-    public GiftCertificateDTO(String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDTO> tagList) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.tagList = tagList;
-    }
 
     public GiftCertificateDTO(UUID id, String name, String description, Double price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDTO> tagList) {
         this.id = id;
@@ -89,16 +75,9 @@ public class GiftCertificateDTO {
         this.duration = duration;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
-    }
-
-    public LocalDateTime getLastUpdateDate() {
-        return lastUpdateDate;
     }
 
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
@@ -113,18 +92,4 @@ public class GiftCertificateDTO {
         this.tagList = tagList;
     }
 
-
-    @Override
-    public String toString() {
-        return "GiftCertificateDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", lastUpdateDate=" + lastUpdateDate +
-                ", tagList=" + tagList +
-                '}';
-    }
 }

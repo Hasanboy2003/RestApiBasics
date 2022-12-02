@@ -1,4 +1,4 @@
-package com.epam.esm.service.giftCertificate;
+package com.epam.esm.service.gift_certificate;
 
 import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.dto.response.ApiResponse;

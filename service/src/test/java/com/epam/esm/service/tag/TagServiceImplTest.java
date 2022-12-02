@@ -1,6 +1,5 @@
 package com.epam.esm.service.tag;
 
-import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
 import com.epam.esm.dao.tag.TagDAO;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.dto.response.ApiResponse;
@@ -38,9 +37,6 @@ class TagServiceImplTest {
     private TagDAO tagDAO;
 
     @Mock
-    private GiftCertificateDAO giftCertificateDAO;
-
-    @Mock
     private TagMapper tagMapper;
 
     @Mock
@@ -52,13 +48,13 @@ class TagServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        tagService = new TagServiceImpl(tagDAO,giftCertificateDAO,tagMapper,tagValidator);
+        tagService = new TagServiceImpl(tagDAO,tagMapper,tagValidator);
         tag = new Tag(UUID.randomUUID(),"Test tag");
         tagDTO = new TagDTO(tag.getId(),tag.getName());
     }
 
     @Test
-    void create() {
+    void createShouldWork() {
         when(tagMapper.fromDTOToEntity(tagDTO)).thenReturn(tag);
         when(tagDAO.existByName(tagDTO.getName())).thenReturn(false);
 
@@ -77,7 +73,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void createSecond(){
+    void createShouldNotWork(){
         when(tagDAO.existByName(tagDTO.getName())).thenReturn(true);
 
         assertThrows(AlreadyExistsException.class,() -> tagService.create(tagDTO));
@@ -86,7 +82,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void get() {
+    void getShouldWork() {
         ApiResponse response = tagService.get();
 
         verify(tagDAO).findAll();
@@ -97,7 +93,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void getById() {
+    void getByIdShouldWork() {
         when(tagDAO.existsById(tagDTO.getId())).thenReturn(true);
         when(tagDAO.getById(tagDTO.getId())).thenReturn(tag);
 
@@ -117,7 +113,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void  getByIdSecond(){
+    void  getByIdShouldNotWork(){
         when(tagDAO.existsById(tagDTO.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class,() -> tagService.getById(tagDTO.getId()));
@@ -126,7 +122,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void deleteShouldWork() {
         when(tagDAO.existsById(tagDTO.getId())).thenReturn(true);
 
         ApiResponse response = tagService.delete(tagDTO.getId());
@@ -144,7 +140,7 @@ class TagServiceImplTest {
     }
 
     @Test
-    void deleteSecond(){
+    void deleteShouldNotWork(){
         when(tagDAO.existsById(tagDTO.getId())).thenReturn(false);
 
         assertThrows(NotFoundException.class,() -> tagService.delete(tagDTO.getId()));

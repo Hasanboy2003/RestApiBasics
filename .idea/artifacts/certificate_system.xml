@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="gift-certificate-system">
-    <output-path>$PROJECT_DIR$/out/artifacts/gift_certificate_system</output-path>
+  <artifact type="exploded-war" name="certificate-system">
+    <output-path>$PROJECT_DIR$/out/artifacts/certificate_system</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -10,25 +10,28 @@
           <element id="module-output" name="git-certificate-system.service.main" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.14.0" />
-          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.14.0" />
-          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.14.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.14.1" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.14.1" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.14.1" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1" />
           <element id="library" level="project" name="Gradle: com.h2database:h2:2.1.214" />
           <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
+          <element id="library" level="project" name="Gradle: javax.validation:validation-api:2.0.1.Final" />
           <element id="library" level="project" name="Gradle: org.apache.commons:commons-dbcp2:2.9.0" />
+          <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.12.0" />
           <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.10.0" />
           <element id="library" level="project" name="Gradle: org.checkerframework:checker-qual:3.5.0" />
           <element id="library" level="project" name="Gradle: org.postgresql:postgresql:42.5.0" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:2.0.3" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.3.23" />
-          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.24" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.3.23" />
-          <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.24" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.3.23" />
-          <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.24" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:5.3.23" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.3.23" />
-          <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.3.24" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.3.23" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.3.23" />
           <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.8.1" />
@@ -36,7 +39,26 @@
           <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-commons:1.8.1" />
           <element id="library" level="project" name="Gradle: org.junit.platform:junit-platform-engine:1.8.1" />
           <element id="library" level="project" name="Gradle: org.opentest4j:opentest4j:1.2.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.14.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.14.0" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.14.0" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.23" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-tx:5.3.23" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-simple:2.0.3" />
+          <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.10.3" />
+          <element id="library" level="project" name="Gradle: com.github.docker-java:docker-java-api:3.2.13" />
+          <element id="library" level="project" name="Gradle: com.github.docker-java:docker-java-transport-zerodep:3.2.13" />
+          <element id="library" level="project" name="Gradle: com.github.docker-java:docker-java-transport:3.2.13" />
+          <element id="library" level="project" name="Gradle: junit:junit:4.13.2" />
+          <element id="library" level="project" name="Gradle: net.java.dev.jna:jna:5.8.0" />
+          <element id="library" level="project" name="Gradle: org.apache.commons:commons-compress:1.22" />
+          <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
+          <element id="library" level="project" name="Gradle: org.jetbrains:annotations:17.0.0" />
+          <element id="library" level="project" name="Gradle: org.rnorth.duct-tape:duct-tape:1.0.8" />
+          <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.36" />
+          <element id="library" level="project" name="Gradle: org.testcontainers:testcontainers:1.17.6" />
           <element id="library" level="project" name="Gradle: net.bytebuddy:byte-buddy-agent:1.12.16" />
           <element id="library" level="project" name="Gradle: net.bytebuddy:byte-buddy:1.12.16" />
           <element id="library" level="project" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.9.1" />

@@ -52,16 +52,22 @@ class TagDAOImplTest {
     }
 
     @Test
-    void save() {
+    void saveShouldWork() {
         Tag tag = new Tag(UUID.randomUUID(), "Gift tag");
         assertTrue(tagDAO.save(tag));
     }
 
     @Test
-    void getById() {
+    void getByIdShouldWork() {
         Tag getTag = tagDAO.getById(tag.getId());
         assertNotNull(getTag);
         assertEquals(getTag.getName(), tag.getName());
+    }
+
+    @Test
+    void getByIdShouldNotWork() {
+        Tag getTag = tagDAO.getById(UUID.randomUUID());
+        assertNull(getTag);
     }
 
     @Test
@@ -71,36 +77,62 @@ class TagDAOImplTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdShouldWork() {
         assertTrue(tagDAO.deleteById(tag.getId()));
+    }
+
+    @Test
+    void deleteByIdShouldNotWork() {
+        assertFalse(tagDAO.deleteById(UUID.randomUUID()));
     }
 
 
     @Test
-    void existsById() {
+    void existsByIdShouldWork() {
         assertTrue(tagDAO.existsById(tag.getId()));
+    }
+
+    @Test
+    void existsByIdShouldNotWork() {
         assertFalse(tagDAO.existsById(UUID.randomUUID()));
     }
 
     @Test
-    void existByName() {
+    void existByNameShouldWork() {
         assertTrue(tagDAO.existByName(tag.getName()));
+    }
+
+    @Test
+    void existByNameShouldNotWork() {
         assertFalse(tagDAO.existByName("tag name"));
     }
 
     @Test
-    void getByName() {
+    void getByNameShouldWork() {
         Tag getTag = tagDAO.getByName(tag.getName());
         assertNotNull(getTag);
         assertEquals(getTag.getName(),tag.getName());
     }
 
     @Test
-    void getByGiftCertificateId() {
+    void getByNameShouldNotWork() {
+        Tag getTag = tagDAO.getByName("test");
+        assertNull(getTag);
+    }
+
+    @Test
+    void getByGiftCertificateIdShouldWork() {
         giftCertificateDAO.connectWithTag(giftCertificate.getId(),tag.getId());
         List<Tag> tagList = tagDAO.getByGiftCertificateId(giftCertificate.getId());
         assertNotNull(tagList);
         assertEquals(tagList.get(0).getName(),tag.getName());
+    }
+
+    @Test
+    void getByGiftCertificateIdShouldNotWork() {
+        giftCertificateDAO.connectWithTag(giftCertificate.getId(),tag.getId());
+        List<Tag> tagList = tagDAO.getByGiftCertificateId(UUID.randomUUID());
+        assertTrue(tagList.isEmpty());
     }
 
 }

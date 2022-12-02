@@ -10,9 +10,9 @@ import java.util.UUID;
  * Base Service
  */
 
-public interface BaseService <DT>{
+public interface BaseService <D>{
 
-    ApiResponse create(DT dto);
+    ApiResponse create(D dto);
 
     ApiResponse get();
 

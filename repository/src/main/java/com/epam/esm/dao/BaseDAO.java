@@ -8,19 +8,20 @@ import java.util.List;
  * Base DAO
  */
 
-public interface BaseDAO <T,ID>{
+
+public interface BaseDAO <T,I>{
 
     boolean existByName(String name);
     T getByName(String name);
-    T getById(ID id);
+    T getById(I id);
 
     List<T> findAll();
 
-    boolean deleteById(ID  id);
+    boolean deleteById(I  id);
 
     boolean   save(T entity);
 
-    void deleteConnection(ID id);
+    void deleteConnection(I id);
 
-    boolean existsById(ID  id);
+    boolean existsById(I  id);
 }

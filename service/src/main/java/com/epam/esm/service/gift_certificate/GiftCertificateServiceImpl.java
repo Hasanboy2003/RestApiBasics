@@ -1,4 +1,4 @@
-package com.epam.esm.service.giftCertificate;
+package com.epam.esm.service.gift_certificate;
 
 import com.epam.esm.dao.gift_certificate.GiftCertificateDAO;
 import com.epam.esm.dao.tag.TagDAO;
@@ -11,9 +11,10 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exceptions.AlreadyExistsException;
 import com.epam.esm.exceptions.NotFoundException;
 import com.epam.esm.mapper.GiftCertificateMapper;
-import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.validators.GiftCertificateValidator;
+import com.epam.esm.validators.TagValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,23 +33,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateValidator certificateValidator;
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
+    private final TagValidator tagValidator;
     private final GiftCertificateMapper giftCertificateMapper;
-    private final TagMapper tagMapper;
 
-    public GiftCertificateServiceImpl(GiftCertificateValidator certificateValidator, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, GiftCertificateMapper giftCertificateMapper, TagMapper tagMapper) {
+    private static final String NOT_FOUND_MESSAGE = "Gift certificate not found (id=";
+    private static final String ALREADY_EXIST_MESSAGE = "Gift certificate already exist (name=";
+
+    public GiftCertificateServiceImpl(GiftCertificateValidator certificateValidator, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, TagValidator tagValidator, GiftCertificateMapper giftCertificateMapper) {
         this.certificateValidator = certificateValidator;
         this.giftCertificateDAO = giftCertificateDAO;
         this.tagDAO = tagDAO;
+        this.tagValidator = tagValidator;
         this.giftCertificateMapper = giftCertificateMapper;
-        this.tagMapper = tagMapper;
     }
 
 
+    @Transactional
     @Override
     public ApiResponse create(GiftCertificateDTO dto) {
         certificateValidator.validate(dto);
+
         if (giftCertificateDAO.existByName(dto.getName()))
-            throw new AlreadyExistsException("Gift certificate already exist (name+" + dto.getName() + ")");
+            throw new AlreadyExistsException(ALREADY_EXIST_MESSAGE + dto.getName() + ")");
 
         GiftCertificate giftCertificate = giftCertificateMapper.fromDTOToEntity(dto);
 
@@ -58,20 +64,22 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificateDAO.save(giftCertificate);
 
         if (dto.getTagList() != null && !dto.getTagList().isEmpty()) {
-            connectGiftCertificateWithTags(dto.getId(), dto.getTagList());
+            dto.getTagList().forEach(tagValidator::validate);
+            connectGiftCertificateWithTags(giftCertificate.getId(), dto.getTagList());
         }
         return new ApiResponse(ResponseMessage.CREATED.getValue());
     }
 
 
+    @Transactional
     @Override
     public ApiResponse update(GiftCertificateDTO dto) {
 
         if (!giftCertificateDAO.existsById(dto.getId()))
-            throw new NotFoundException("Gift certificate not found (id=" + dto.getId()+")");
+            throw new NotFoundException(NOT_FOUND_MESSAGE + dto.getId() + ")");
 
-        if (giftCertificateDAO.existByNameAndIdNotEquals(dto.getId(),dto.getName()))
-            throw new AlreadyExistsException("Gift certificate already exist (name=" + dto.getName() + ")");
+        if (giftCertificateDAO.existByNameAndIdNotEquals(dto.getId(), dto.getName()))
+            throw new AlreadyExistsException(ALREADY_EXIST_MESSAGE + dto.getName() + ")");
 
         GiftCertificate giftCertificate = giftCertificateDAO.getById(dto.getId());
 
@@ -79,7 +87,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificate.setLastUpdateDate(LocalDateTime.now());
         giftCertificateDAO.update(giftCertificate);
 
-        if (dto.getTagList() != null) {
+        if (dto.getTagList() != null && !dto.getTagList().isEmpty()) {
+            dto.getTagList().forEach(tagValidator::validate);
             giftCertificateDAO.deleteConnection(dto.getId());
             connectGiftCertificateWithTags(dto.getId(), dto.getTagList());
         }
@@ -90,8 +99,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public ApiResponse delete(UUID id) {
         if (!giftCertificateDAO.existsById(id))
-            throw new NotFoundException("Gift certificate not found (id=" + id+")");
+            throw new NotFoundException(NOT_FOUND_MESSAGE + id + ")");
 
+        giftCertificateDAO.deleteConnection(id);
         giftCertificateDAO.deleteById(id);
         return new ApiResponse(ResponseMessage.DELETED.getValue());
     }
@@ -99,61 +109,65 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public ApiResponse get() {
-        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateDAO.findAll()
-                .stream()
+        List<GiftCertificate> giftCertificateList = giftCertificateDAO.findAll();
+        for (GiftCertificate certificate : giftCertificateList) {
+            List<Tag> tagList = tagDAO.getByGiftCertificateId(certificate.getId());
+            certificate.setTags(tagList);
+        }
+
+        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateList.stream()
                 .map(giftCertificateMapper::fromEntityToDTO)
                 .collect(Collectors.toList());
-
-        return new ApiResponse(ResponseMessage.READ.getValue(),addTagDtoList(giftCertificateDTOList));
+        return new ApiResponse(ResponseMessage.READ.getValue(),giftCertificateDTOList);
     }
 
     @Override
     public ApiResponse getById(UUID id) {
         if (!giftCertificateDAO.existsById(id))
-            throw new NotFoundException("Gift certificate not found (id=" + id+")");
-        return new ApiResponse(ResponseMessage.READ.getValue(),giftCertificateMapper.fromEntityToDTO(giftCertificateDAO.getById(id)));
+            throw new NotFoundException(NOT_FOUND_MESSAGE + id + ")");
+
+        GiftCertificate giftCertificate = giftCertificateDAO.getById(id);
+        List<Tag> tagList = tagDAO.getByGiftCertificateId(giftCertificate.getId());
+        giftCertificate.setTags(tagList);
+        return new ApiResponse(ResponseMessage.READ.getValue(), giftCertificateMapper.fromEntityToDTO(giftCertificate));
     }
 
     @Override
     public ApiResponse getFilterResult(String name, String description, String tag, String sortParameters) {
-        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateDAO.searchByFilters(name, description, tag, sortParameters)
-                .stream()
+        List<GiftCertificate> giftCertificateList = giftCertificateDAO.searchByFilters(name, description, tag, sortParameters);
+
+        for (GiftCertificate certificate : giftCertificateList) {
+            List<Tag> tags = tagDAO.getByGiftCertificateId(certificate.getId());
+            certificate.setTags(tags);
+        }
+
+        List<GiftCertificateDTO> giftCertificateDTOList = giftCertificateList.stream()
                 .map(giftCertificateMapper::fromEntityToDTO)
                 .collect(Collectors.toList());
 
-        return new ApiResponse(ResponseMessage.READ.getValue(),addTagDtoList(giftCertificateDTOList));
+        return new ApiResponse(ResponseMessage.READ.getValue(),giftCertificateDTOList);
     }
 
     public void connectGiftCertificateWithTags(UUID giftCertificateId, List<TagDTO> tagList) {
 
         for (TagDTO tagDTO : tagList) {
-            UUID tagId = tagDTO.getId();
+            Tag tag = tagDAO.getByName(tagDTO.getName());
 
-            if (!tagDAO.existByName(tagDTO.getName())) {
-
-                Tag tag = new Tag(UUID.randomUUID(), tagDTO.getName());
+            if (tag==null) {
+                tag = new Tag(UUID.randomUUID(), tagDTO.getName());
                 tagDAO.save(tag);
-
-                tagId = tag.getId();
             }
 
-            giftCertificateDAO.connectWithTag(giftCertificateId, tagId);
+            giftCertificateDAO.connectWithTag(giftCertificateId,tag.getId());
         }
     }
 
-    private List<GiftCertificateDTO> addTagDtoList(List<GiftCertificateDTO> giftCertificateDTOList) {
-        for (GiftCertificateDTO dto : giftCertificateDTOList) {
-            List<TagDTO> tagDTOList = tagDAO.getByGiftCertificateId(dto.getId()).stream().map(tagMapper::fromEntityToDTO).collect(Collectors.toList());
-            dto.setTagList(tagDTOList);
-        }
-        return giftCertificateDTOList;
-    }
 
-    private void updateEntity(GiftCertificateDTO dto,GiftCertificate certificate) {
-        certificate.setName(dto.getName()==null? certificate.getName() : dto.getName());
-        certificate.setDescription(dto.getDescription()==null? certificate.getDescription() : dto.getDescription());
-        certificate.setPrice(dto.getPrice()==null? certificate.getPrice() : dto.getPrice());
-        certificate.setDuration(dto.getDuration()==null?certificate.getDuration():dto.getDuration());
+    private void updateEntity(GiftCertificateDTO dto, GiftCertificate certificate) {
+        certificate.setName(dto.getName() == null ? certificate.getName() : dto.getName());
+        certificate.setDescription(dto.getDescription() == null ? certificate.getDescription() : dto.getDescription());
+        certificate.setPrice(dto.getPrice() == null ? certificate.getPrice() : dto.getPrice());
+        certificate.setDuration(dto.getDuration() == null ? certificate.getDuration() : dto.getDuration());
     }
 
 }

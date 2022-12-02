@@ -4,11 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Hasanboy Makhmudov
- * @project Rest api basics
- * Gift Certificate Entity
- */
+
 
 public class GiftCertificate extends BaseEntity {
     private String description;
@@ -30,6 +26,7 @@ public class GiftCertificate extends BaseEntity {
         this.lastUpdateDate = lastUpdateDate;
         this.tags = tags;
     }
+
 
     public String getDescription() {
         return description;
@@ -78,4 +75,5 @@ public class GiftCertificate extends BaseEntity {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
+
 }
