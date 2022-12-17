@@ -13,20 +13,22 @@ import java.util.UUID;
  * Tag Controller
  */
 
-@RequestMapping("/api/v1/tag")
+@RequestMapping("/api/v1/tags")
 public interface TagController {
-
 
     /**
      * Create tag
+     *
      * @param dto - TagDto
      * @return ApiResponse
      */
+
     @PostMapping
     ResponseEntity<ApiResponse> create(@RequestBody TagDTO dto);
 
     /**
-     * Get All Taf
+     * Get All Tag
+     *
      * @return ApiResponse
      */
     @GetMapping
@@ -34,6 +36,7 @@ public interface TagController {
 
     /**
      * Get Tag
+     *
      * @param id - UUID
      * @return ApiResponse
      */
@@ -43,11 +46,11 @@ public interface TagController {
 
     /**
      * Delete tag
+     *
      * @param id - UUID
      * @return ApiResponse
      */
     @DeleteMapping("/{id}")
     ResponseEntity<ApiResponse> delete(@PathVariable UUID id);
-
 
 }

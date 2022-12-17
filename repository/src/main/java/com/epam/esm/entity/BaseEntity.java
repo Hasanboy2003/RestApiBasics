@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public abstract class BaseEntity {
     private UUID id;
+
+
     private String name;
 
     protected BaseEntity(UUID id, String name) {

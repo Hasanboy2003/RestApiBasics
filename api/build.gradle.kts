@@ -10,7 +10,6 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation("org.springframework:spring-web:5.3.23")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")

@@ -27,13 +27,15 @@ public class TagServiceImpl implements TagService {
     private final TagMapper tagMapper;
 
     private final TagValidator tagValidator;
-    private static final String NOT_FOUND_MESSAGE="Requested tag not found (id=";
 
     public TagServiceImpl(TagDAO tagDAO, TagMapper tagMapper, TagValidator tagValidator) {
         this.tagDAO = tagDAO;
         this.tagMapper = tagMapper;
         this.tagValidator = tagValidator;
     }
+
+    private static final String NOT_FOUND_MESSAGE="Requested tag not found (id=";
+
 
     @Override
     public ApiResponse create(TagDTO dto) {
@@ -62,7 +64,6 @@ public class TagServiceImpl implements TagService {
         TagDTO tagDTO = tagMapper.fromEntityToDTO(tagDAO.getById(id));
         return new ApiResponse(ResponseMessage.READ.getValue(), tagDTO);
     }
-
 
 
     @Override

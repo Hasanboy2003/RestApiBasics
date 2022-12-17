@@ -6,6 +6,7 @@ import com.epam.esm.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 /**
@@ -14,7 +15,7 @@ import java.util.UUID;
  * Gift certificate controller
  */
 
-@RequestMapping("/api/v1/gift/certificate")
+@RequestMapping("/api/v1/gift/certificates")
 public interface GiftCertificateController {
 
 
@@ -25,7 +26,7 @@ public interface GiftCertificateController {
      * @return ApiResponse
      */
     @PostMapping
-    ResponseEntity<ApiResponse> create(@RequestBody GiftCertificateDTO dto);
+    ResponseEntity<ApiResponse> create(@Valid @RequestBody GiftCertificateDTO dto);
 
     /**
      * Update gift certificate
@@ -34,7 +35,7 @@ public interface GiftCertificateController {
      * @return ApiResponse
      */
     @PutMapping
-    ResponseEntity<ApiResponse> update(@RequestBody GiftCertificateDTO dto);
+    ResponseEntity<ApiResponse> update(@Valid @RequestBody GiftCertificateDTO dto);
 
     /**
      * Delete gift certificate

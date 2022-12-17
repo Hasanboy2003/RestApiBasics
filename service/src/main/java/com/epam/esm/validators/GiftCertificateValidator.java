@@ -14,12 +14,10 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @Component
 public class GiftCertificateValidator implements BaseValidator<GiftCertificateDTO>{
-
     @Override
     public void validate(GiftCertificateDTO dto) {
-        if(dto.getName()==null){
+        if(dto.getName()==null)
             throw new NotValidException("Gift certificate name must not be null!");
-        }
 
         if(dto.getName().isEmpty())
             throw  new NotValidException("Gift certificate name mus not be empty!");
@@ -27,13 +25,11 @@ public class GiftCertificateValidator implements BaseValidator<GiftCertificateDT
         if(isNumeric(dto.getName()))
             throw new NotValidException("Gift certificate name must not be digit");
 
-        if(dto.getPrice()<=0){
-            throw new NotValidException("Gift certificate price must be positive!");
-        }
+        if(!isNumeric(dto.getPrice()+""))
+            throw new NotValidException("Gift certificate price must be digit and positive!");
 
-        if(dto.getDuration()<=0){
-            throw new NotValidException("Gift certificate duration must be positive!");
-        }
+        if(isNumeric(dto.getDuration()+""))
+            throw new NotValidException("Gift certificate duration must be digit and positive!");
     }
 
 }

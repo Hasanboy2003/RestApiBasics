@@ -1,16 +1,17 @@
 package com.epam.esm.dao.gift_certificate;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.enums.Parameter;
 import com.epam.esm.row_mapper.GiftCertificateRowMapper;
+import com.epam.esm.rule.Rule;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * @author Hasanboy Makhmudov
@@ -74,7 +75,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         parameterSource.addValue(FIELD_ID, id);
 
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_GIFT_CERTIFICATE_BY_ID, parameterSource, giftCertificateRowMapper);
-        return certificates.isEmpty()?null:certificates.get(0);
+        return certificates.isEmpty() ? null : certificates.get(0);
     }
 
 
@@ -155,7 +156,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
         parameterSource.addValue(FIELD_NAME, name);
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_GIFT_CERTIFICATE_BY_NAME, parameterSource, giftCertificateRowMapper);
-        return certificates.isEmpty()?null:certificates.get(0);
+        return certificates.isEmpty() ? null : certificates.get(0);
     }
 
 
@@ -211,20 +212,64 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     public List<GiftCertificate> searchByFilters(String name, String description, String tagName, String sortParameters) {
         String searchQuery = "SELECT gc.*\n" +
                 "FROM gift_certificate gc\n" +
-
                 "         LEFT JOIN gift_certificate_tag gct on gc.id = gct.gift_certificate_id\n" +
-                "         LEFT JOIN tag t on t.id = gct.tag_id\n" +
-                "WHERE lower(gc.name) LIKE concat('%', lower(:name), '%')\n" +
-                "   or lower(gc.description) LIKE concat('%', lower(:description), '%')\n" +
-                "   or lower(coalesce(t.name,'')) = lower(coalesce(:tagName,'')) ";
+                "         LEFT JOIN tag t on t.id = gct.tag_id\n";
 
         parameterSource.addValue(FIELD_NAME, name).addValue(FIELD_DESCRIPTION, description).addValue("tagName", tagName);
+        String changeQuery = changeQuery(name, description, tagName,  searchQuery);
 
         if (sortParameters != null && sortMap.containsKey(sortParameters))
-            searchQuery += sortMap.get(sortParameters);
+            changeQuery += sortMap.get(sortParameters);
+        return jdbcTemplate.query(changeQuery, parameterSource, giftCertificateRowMapper);
+    }
 
-        return jdbcTemplate.query(searchQuery, parameterSource, giftCertificateRowMapper);
+    Map<Parameter, Rule<String>> createRules(List<String> values, String queryProcess) {
+        Map<Parameter, Rule<String>> ruleMap = new HashMap<>();
+        ruleMap.put(Parameter.NAME, createRuleForName(values.get(0), queryProcess));
+        ruleMap.put(Parameter.DESCRIPTION, createRuleForDescription(values.get(1), ruleMap.get(Parameter.NAME).process.get()));
+        ruleMap.put(Parameter.TAG_NAME, createRuleForTagName(values.get(2), ruleMap.get(Parameter.DESCRIPTION).process.get()));
+        return ruleMap;
     }
 
 
+    Rule<String> createRuleForName(String value, String process) {
+        return createRule(
+                () -> value != null,
+                () -> process + " WHERE lower(gc.name) LIKE concat('%', lower(:name), '%')"
+        );
+    }
+
+    Rule<String> createRuleForDescription(String value, String process) {
+        return createRule(
+                () -> value != null,
+                () ->
+                        process.contains("WHERE")
+                                ? process + " AND lower(gc.description) LIKE concat('%', lower(:description), '%')"
+                                : process + " WHERE lower(gc.description) LIKE concat('%', lower(:description), '%')"
+        );
+    }
+
+    Rule<String> createRuleForTagName(String value, String process) {
+        return createRule(
+                () -> value != null,
+                () ->
+                        process.contains("WHERE")
+                                ? process + " AND lower(coalesce(t.name,'')) = lower(coalesce(:tagName,''))"
+                                : process + " WHERE lower(coalesce(t.name,'')) = lower(coalesce(:tagName,''))"
+        );
+    }
+
+    Rule<String> createRule(Supplier<Boolean> supplier, Supplier<String> process) {
+        return new Rule<>(supplier, process);
+    }
+
+    String changeQuery(String name, String description, String tagName, String searchQuery) {
+        List<String> values = new LinkedList<>(Arrays.asList(name, description, tagName));
+        Map<Parameter, Rule<String>> rules = createRules(values, searchQuery);
+        return Stream.of(Parameter.values())
+                .filter(parameter -> rules.get(parameter).condition.get())
+                .map(parameter -> rules.get(parameter).process.get())
+                .reduce((first, second) -> second)
+                .orElse(searchQuery);
+    }
 }

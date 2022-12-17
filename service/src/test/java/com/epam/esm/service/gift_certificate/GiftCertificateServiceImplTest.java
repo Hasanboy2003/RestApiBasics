@@ -46,14 +46,15 @@ class GiftCertificateServiceImplTest {
     private GiftCertificateValidator giftCertificateValidator;
 
     @Mock
+    private TagValidator tagValidator;
+
+    @Mock
     private GiftCertificateMapper giftCertificateMapper;
 
 
     @Mock
     private GiftCertificateDAO giftCertificateDAO;
 
-    @Mock
-    private TagValidator tagValidator;
 
     @Mock
     private TagDAO tagDAO;
@@ -66,7 +67,7 @@ class GiftCertificateServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateValidator, giftCertificateDAO, tagDAO, tagValidator, giftCertificateMapper);
+        giftCertificateService = new GiftCertificateServiceImpl(giftCertificateValidator, tagValidator,giftCertificateDAO, tagDAO, giftCertificateMapper);
 
         Tag tag = new Tag(UUID.randomUUID(), "Test tag");
         giftCertificate = new GiftCertificate(UUID.randomUUID(), "TestGiftCertificate", "Description for test",

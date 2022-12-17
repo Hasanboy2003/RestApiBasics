@@ -34,13 +34,14 @@ class TagServiceImplTest {
     private TagService tagService;
 
     @Mock
+    private TagValidator tagValidator;
+
+    @Mock
     private TagDAO tagDAO;
 
     @Mock
     private TagMapper tagMapper;
 
-    @Mock
-    private TagValidator tagValidator;
 
     private Tag tag;
 

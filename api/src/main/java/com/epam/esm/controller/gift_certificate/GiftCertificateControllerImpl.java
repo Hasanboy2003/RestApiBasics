@@ -53,4 +53,5 @@ public class GiftCertificateControllerImpl implements GiftCertificateController 
     public ResponseEntity<ApiResponse> certificateFilter(String name, String description, String tag, String sortParameters) {
         return ResponseEntity.status(HttpStatus.OK).body(giftCertificateService.getFilterResult(name,description,tag,sortParameters));
     }
+
 }

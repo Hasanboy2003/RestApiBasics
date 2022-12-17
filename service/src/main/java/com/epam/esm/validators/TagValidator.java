@@ -6,28 +6,19 @@ import org.springframework.stereotype.Component;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
-/**
- * @author Hasanboy Makhmudov
- * @project Rest api basics
- * Tag Validator
- */
-
 @Component
-public class TagValidator implements BaseValidator<TagDTO>{
-
-
+public class TagValidator implements BaseValidator<TagDTO> {
 
 
     @Override
-    public void validate(TagDTO tagDTO) {
-        if(tagDTO.getName()==null)
-           throw  new NotValidException("Tag name must not be null");
+    public void validate(TagDTO dto) {
+        if(dto.getName()==null)
+            throw new NotValidException("Tag name must not be null!");
 
-        if(tagDTO.getName().isEmpty())
-            throw new NotValidException("Tag name must not be empty");
+        if(dto.getName().isEmpty())
+            throw  new NotValidException("Tag name mus not be empty!");
 
-        if(isNumeric(tagDTO.getName()))
+        if(isNumeric(dto.getName()))
             throw new NotValidException("Tag name must not be digit");
     }
-
 }

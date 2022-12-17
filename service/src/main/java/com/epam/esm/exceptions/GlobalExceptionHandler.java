@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
 /**
  * @author Hasanboy Makhmudov
  * @project Rest api basics
  * Global Exception Handler
  */
-
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,5 +39,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
     }
 
+    @ExceptionHandler
+    public  ResponseEntity<ErrorDTO> handleValidationExceptions(Exception e) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        String message = e.getMessage();
+        String source  = "[Source";
+        if(message.contains(source)){
+        String field = message.substring(message.indexOf("[\"")-3,message.indexOf("\"]"));
+        message=message.substring(0,message.indexOf(source))+field;
+        }
+        errorDTO.setErrorMessage(message);
+        errorDTO.setErrorCode(ErrorCodeStatus.BAD_REQUEST.code);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
+    }
 
 }

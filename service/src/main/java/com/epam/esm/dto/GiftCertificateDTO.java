@@ -2,8 +2,8 @@ package com.epam.esm.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -12,7 +12,6 @@ public class GiftCertificateDTO {
 
     private UUID id;
     private String name;
-
     private String description;
     private Double price;
     private Integer duration;

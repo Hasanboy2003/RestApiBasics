@@ -26,27 +26,26 @@ import java.util.stream.Collectors;
  * @project Rest api basics
  * Gift Certificate Service Implement
  */
-
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateValidator certificateValidator;
+    private final TagValidator tagValidator;
     private final GiftCertificateDAO giftCertificateDAO;
     private final TagDAO tagDAO;
-    private final TagValidator tagValidator;
     private final GiftCertificateMapper giftCertificateMapper;
 
     private static final String NOT_FOUND_MESSAGE = "Gift certificate not found (id=";
     private static final String ALREADY_EXIST_MESSAGE = "Gift certificate already exist (name=";
 
-    public GiftCertificateServiceImpl(GiftCertificateValidator certificateValidator, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, TagValidator tagValidator, GiftCertificateMapper giftCertificateMapper) {
+
+    public GiftCertificateServiceImpl(GiftCertificateValidator certificateValidator, TagValidator tagValidator, GiftCertificateDAO giftCertificateDAO, TagDAO tagDAO, GiftCertificateMapper giftCertificateMapper) {
         this.certificateValidator = certificateValidator;
+        this.tagValidator = tagValidator;
         this.giftCertificateDAO = giftCertificateDAO;
         this.tagDAO = tagDAO;
-        this.tagValidator = tagValidator;
         this.giftCertificateMapper = giftCertificateMapper;
     }
-
 
     @Transactional
     @Override
