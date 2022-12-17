@@ -9,7 +9,6 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @Component
 public class TagValidator implements BaseValidator<TagDTO> {
 
-
     @Override
     public void validate(TagDTO dto) {
         if(dto.getName()==null)

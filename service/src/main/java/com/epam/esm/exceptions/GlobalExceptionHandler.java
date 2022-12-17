@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         String message = e.getMessage();
         String source  = "[Source";
         if(message.contains(source)){
-        String field = message.substring(message.indexOf("[\"")-3,message.indexOf("\"]"));
+        String field = message.substring(message.indexOf("[\"")+2,message.indexOf("\"]"));
         message=message.substring(0,message.indexOf(source))+field;
         }
         errorDTO.setErrorMessage(message);

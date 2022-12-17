@@ -1,17 +1,13 @@
 plugins {
     id("java")
-    id("jacoco")
-    id("org.sonarqube").version("3.4.0.2513")
 }
 
 group = "com.epam.esm"
 version = "1.0-SNAPSHOT"
 
-
 repositories {
     mavenCentral()
 }
-
 
 dependencies {
 

@@ -6,6 +6,7 @@ plugins {
 group = "com.epam.esm"
 version = "1.0-SNAPSHOT"
 
+
 repositories {
     mavenCentral()
 }

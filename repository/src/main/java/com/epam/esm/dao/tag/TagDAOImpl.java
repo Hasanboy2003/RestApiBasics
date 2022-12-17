@@ -53,40 +53,33 @@ public class TagDAOImpl implements TagDAO {
     public Tag getById(UUID id) {
         parameterSource.addValue(FIELD_ID, id);
         List<Tag> tags = jdbcTemplate.query(SELECT_TAG_BY_ID, parameterSource, tagRowMapper);
-        return tags.isEmpty()?null:tags.get(0);
+        return tags.isEmpty() ? null : tags.get(0);
     }
-
 
     @Override
     public List<Tag> findAll() {
-
         return jdbcTemplate.query(SELECT_TAG, tagRowMapper);
-
     }
-
 
     @Override
     public boolean deleteById(UUID id) {
         parameterSource.addValue(FIELD_ID, id);
         int delete = jdbcTemplate.update(DELETE_TAG, parameterSource);
-        return delete==1;
+        return delete == 1;
     }
-
 
     @Override
     public boolean save(Tag entity) {
         parameterSource.addValue(FIELD_ID, entity.getId()).addValue(FIELD_NAME, entity.getName());
         int save = jdbcTemplate.update(INSERT_TAG, parameterSource);
-        return save==1;
+        return save == 1;
     }
-
 
     @Override
     public void deleteConnection(UUID tagId) {
         parameterSource.addValue("tagId", tagId);
         jdbcTemplate.update(DELETE_GIFT_CERTIFICATE_TAG, parameterSource);
     }
-
 
     @Override
     public boolean existsById(UUID id) {
@@ -100,12 +93,9 @@ public class TagDAOImpl implements TagDAO {
         ));
     }
 
-
-
     @Override
     public boolean existByName(String name) {
-
-        parameterSource.addValue(FIELD_NAME,name);
+        parameterSource.addValue(FIELD_NAME, name);
         return Boolean.TRUE.equals(jdbcTemplate.query(EXIST_TAG_BY_NAME, parameterSource,
                 rs -> {
                     if (rs.next())
@@ -113,22 +103,19 @@ public class TagDAOImpl implements TagDAO {
                     return false;
                 }
         ));
-
     }
 
     @Override
     public Tag getByName(String name) {
         parameterSource.addValue(FIELD_NAME, name);
         List<Tag> tags = jdbcTemplate.query(SELECT_TAG_BY_NAME, parameterSource, tagRowMapper);
-        return tags.isEmpty()?null:tags.get(0);
+        return tags.isEmpty() ? null : tags.get(0);
     }
-
 
     @Override
     public List<Tag> getByGiftCertificateId(UUID giftCertificateId) {
-
         parameterSource.addValue("id", giftCertificateId);
-        return  jdbcTemplate.query(SELECT_TAG_BY_GIFT_CERTIFICATE_ID, parameterSource, tagRowMapper);
+        return jdbcTemplate.query(SELECT_TAG_BY_GIFT_CERTIFICATE_ID, parameterSource, tagRowMapper);
 
     }
 }

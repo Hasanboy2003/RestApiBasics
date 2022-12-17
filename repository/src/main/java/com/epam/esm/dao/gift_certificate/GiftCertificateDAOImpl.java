@@ -10,8 +10,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import static com.epam.esm.rule.RuleEngine.*;
 
 /**
  * @author Hasanboy Makhmudov
@@ -49,6 +50,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private static final String TAG_ID = "tagId";
 
     private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM gift_certificate WHERE id=:id";
+    private static final String EXIST_BY_GIFT_CERTIFICATE_AND_TAG = "select case when  exists( select * from gift_certificate_tag gct where gct.gift_certificate_id = :giftCertificateId and gct.tag_id = :tagId ) then true else false end ";
+
     private static final String SELECT_GIFT_CERTIFICATE = "SELECT * FROM gift_certificate";
     private static final String DELETE_GIFT_CERTIFICATE = "DELETE FROM gift_certificate WHERE id=:id";
     private static final String INSERT_GIFT_CERTIFICATE = "INSERT INTO gift_certificate(id,name,description,price,duration,create_date,last_update_date) " +
@@ -59,6 +62,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private static final String EXIST_GIFT_CERTIFICATE_BY_NAME = "select case when exists( select * from gift_certificate gc where lower(gc.name) = lower(:name) ) then true else false end ";
     private static final String SELECT_GIFT_CERTIFICATE_BY_NAME = "SELECT * FROM gift_certificate WHERE lower(name) = lower(:name)";
     private static final String INSERT_GIT_CERTIFICATE_TAG = "INSERT INTO gift_certificate_tag(gift_certificate_id,tag_id) VALUES(:giftCertificateId,:tagId)";
+    private static final String DELETE_GIFT_CERTIFICATE_TAG = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=:giftCertificateId";
+    private static final String EXIST_BY_NAME_AND_ID_NOT_EQUAL = "select case when exists( select * from gift_certificate gc where gc.id != :id and gc.name = :name ) then true else false end ";
 
 
     public GiftCertificateDAOImpl(NamedParameterJdbcTemplate jdbcTemplate, MapSqlParameterSource parameterSource, GiftCertificateRowMapper giftCertificateRowMapper) {
@@ -71,9 +76,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public GiftCertificate getById(UUID id) {
-
         parameterSource.addValue(FIELD_ID, id);
-
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_GIFT_CERTIFICATE_BY_ID, parameterSource, giftCertificateRowMapper);
         return certificates.isEmpty() ? null : certificates.get(0);
     }
@@ -81,32 +84,22 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public List<GiftCertificate> findAll() {
-
         return jdbcTemplate.query(SELECT_GIFT_CERTIFICATE, giftCertificateRowMapper);
-
     }
-
 
     @Override
     public boolean deleteById(UUID id) {
-
         parameterSource.addValue(FIELD_ID, id);
-
         int delete = jdbcTemplate.update(DELETE_GIFT_CERTIFICATE, parameterSource);
         return delete == 1;
-
     }
-
-
     @Override
     public boolean save(GiftCertificate entity) {
-
         parameterSource
                 .addValue(FIELD_ID, entity.getId()).addValue(FIELD_NAME, entity.getName())
                 .addValue(FIELD_DESCRIPTION, entity.getDescription()).addValue(FIELD_PRICE, entity.getPrice())
                 .addValue(FIELD_DURATION, entity.getDuration()).addValue(FIELD_CREATE_DATE, entity.getCreateDate())
                 .addValue(FIELD_LAST_UPDATE, entity.getLastUpdateDate());
-
         int save = jdbcTemplate.update(INSERT_GIFT_CERTIFICATE, parameterSource);
         return save == 1;
     }
@@ -114,7 +107,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public boolean existsById(UUID id) {
-
         parameterSource.addValue(FIELD_ID, id);
         return (Boolean) jdbcTemplate.query(EXIST_GIFT_CERTIFICATE_BY_ID, parameterSource, (ResultSetExtractor<Object>) rs -> {
             if (rs.next()) {
@@ -123,8 +115,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             return false;
         });
     }
-
-
     @Override
     public boolean update(GiftCertificate entity) {
         parameterSource.addValue(FIELD_NAME, entity.getName())
@@ -136,11 +126,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         int update = jdbcTemplate.update(UPDATE_GIFT_CERTIFICATE, parameterSource);
         return update == 1;
     }
-
-
     @Override
     public boolean existByName(String name) {
-
         parameterSource.addValue(FIELD_NAME, name);
         return (Boolean) jdbcTemplate.query(EXIST_GIFT_CERTIFICATE_BY_NAME, parameterSource, (ResultSetExtractor<Object>) rs -> {
             if (rs.next()) {
@@ -153,7 +140,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
     @Override
     public GiftCertificate getByName(String name) {
-
         parameterSource.addValue(FIELD_NAME, name);
         List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_GIFT_CERTIFICATE_BY_NAME, parameterSource, giftCertificateRowMapper);
         return certificates.isEmpty() ? null : certificates.get(0);
@@ -172,7 +158,6 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         }
     }
 
-    private static final String EXIST_BY_GIFT_CERTIFICATE_AND_TAG = "select case when  exists( select * from gift_certificate_tag gct where gct.gift_certificate_id = :giftCertificateId and gct.tag_id = :tagId ) then true else false end ";
 
     @Override
     public boolean existByGiftCertificateIdAndTagId(UUID giftCertificateId, UUID tagId) {
@@ -185,16 +170,12 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         });
     }
 
-
-    private static final String DELETE_GIFT_CERTIFICATE_TAG = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=:giftCertificateId";
-
     @Override
     public void deleteConnection(UUID giftCertificateId) {
         parameterSource.addValue(GIFT_CERTIFICATE_ID, giftCertificateId);
         jdbcTemplate.update(DELETE_GIFT_CERTIFICATE_TAG, parameterSource);
     }
 
-    private static final String EXIST_BY_NAME_AND_ID_NOT_EQUAL = "select case when exists( select * from gift_certificate gc where gc.id != :id and gc.name = :name ) then true else false end ";
 
     @Override
     public boolean existByNameAndIdNotEquals(UUID id, String name) {
@@ -223,7 +204,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         return jdbcTemplate.query(changeQuery, parameterSource, giftCertificateRowMapper);
     }
 
-    Map<Parameter, Rule<String>> createRules(List<String> values, String queryProcess) {
+    private Map<Parameter, Rule<String>> createRules(List<String> values, String queryProcess) {
         Map<Parameter, Rule<String>> ruleMap = new HashMap<>();
         ruleMap.put(Parameter.NAME, createRuleForName(values.get(0), queryProcess));
         ruleMap.put(Parameter.DESCRIPTION, createRuleForDescription(values.get(1), ruleMap.get(Parameter.NAME).process.get()));
@@ -232,38 +213,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     }
 
 
-    Rule<String> createRuleForName(String value, String process) {
-        return createRule(
-                () -> value != null,
-                () -> process + " WHERE lower(gc.name) LIKE concat('%', lower(:name), '%')"
-        );
-    }
-
-    Rule<String> createRuleForDescription(String value, String process) {
-        return createRule(
-                () -> value != null,
-                () ->
-                        process.contains("WHERE")
-                                ? process + " AND lower(gc.description) LIKE concat('%', lower(:description), '%')"
-                                : process + " WHERE lower(gc.description) LIKE concat('%', lower(:description), '%')"
-        );
-    }
-
-    Rule<String> createRuleForTagName(String value, String process) {
-        return createRule(
-                () -> value != null,
-                () ->
-                        process.contains("WHERE")
-                                ? process + " AND lower(coalesce(t.name,'')) = lower(coalesce(:tagName,''))"
-                                : process + " WHERE lower(coalesce(t.name,'')) = lower(coalesce(:tagName,''))"
-        );
-    }
-
-    Rule<String> createRule(Supplier<Boolean> supplier, Supplier<String> process) {
-        return new Rule<>(supplier, process);
-    }
-
-    String changeQuery(String name, String description, String tagName, String searchQuery) {
+   private String changeQuery(String name, String description, String tagName, String searchQuery) {
         List<String> values = new LinkedList<>(Arrays.asList(name, description, tagName));
         Map<Parameter, Rule<String>> rules = createRules(values, searchQuery);
         return Stream.of(Parameter.values())
@@ -272,4 +222,5 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
                 .reduce((first, second) -> second)
                 .orElse(searchQuery);
     }
+
 }
